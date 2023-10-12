@@ -1,5 +1,10 @@
 from sklearn.decomposition import PCA
 import pandas as pd
+import os, sys
+PROJECT_ROOT = (os.path.abspath('./'))
+sys.path.append(PROJECT_ROOT)
+
+from utils.logger import logger
 
 def get_selected_components_df(input_df: pd.DataFrame, no_components: int = 20 ) -> pd.DataFrame:
     """
@@ -15,9 +20,13 @@ def get_selected_components_df(input_df: pd.DataFrame, no_components: int = 20 )
     """
 
     pca = PCA(n_components=no_components)
-    principal_components = pca.fit_transform(input_df)
+    try:
+        principal_components = pca.fit_transform(input_df)
+        components_df = pd.DataFrame(principal_components)
+    except Exception as e:
+        logger.error(f"Error in applying PCA for reducing dimensionality : {e}")
+        raise ValueError(e)
 
-    components_df = pd.DataFrame(principal_components)
     components_df.columns = ["component_"+str(i) for i in range(no_components)]
 
     return components_df
