@@ -10,7 +10,7 @@ load_dotenv(CONFILE_FILE)
 
 def setup_logger(log_file_path):
     # Create a logger
-    logger = logging.getLogger("ml_deploy_logger")
+    logger = logging.getLogger(os.getenv("LOGGER_NAME"))
     logger.setLevel(logging.INFO)
 
     # Create a file handler and set the log level
@@ -33,7 +33,7 @@ def setup_logger(log_file_path):
     return logger
 
 #Create the logger
-log_file_path = os.getenv("LOG_FILENAME")
+log_file_path = os.path.join(PROJECT_ROOT, os.getenv("LOG_FILENAME"))
 logger = setup_logger(log_file_path)
 
 
