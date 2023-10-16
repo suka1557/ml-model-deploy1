@@ -6,12 +6,11 @@ sys.path.append(PROJECT_ROOT)
 import numpy as np
 import pandas as pd
 from itertools import product
-from ensure import ensure_annotations
 
 import mlflow
 from sklearn.ensemble import RandomForestClassifier
 
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, accuracy_score
 from dotenv import load_dotenv
 
 from src.model_training.train_test_split import get_train_test_split
@@ -19,7 +18,6 @@ from src.feature_selection.feature_selection_pca import get_selected_components_
 from src.experiment_track.mlflow_setup import set_up_mlflow_tracking
 from utils.aws_credentials import load_aws_credentials_into_memory
 
-@ensure_annotations
 def random_forest_model_experiments(input_df: pd.DataFrame, target: pd.Series,
                         hyperparameters_dict: dict, exp_name: str,
                         test_set_size: float, class_distributed: bool,
@@ -44,7 +42,7 @@ def random_forest_model_experiments(input_df: pd.DataFrame, target: pd.Series,
         with mlflow.start_run(experiment_id=experiment_id):
 
             #get pca components
-            components_df = get_selected_components_df(input_df=input_df, no_components=current_parameters['no_components'])
+            components_df, pca_decomposer = get_selected_components_df(input_df=input_df, no_components=current_parameters['no_components'])
 
             #Remove no_components from parameter dict
             no_components = current_parameters['no_components']
@@ -58,27 +56,32 @@ def random_forest_model_experiments(input_df: pd.DataFrame, target: pd.Series,
                 val_x, val_y = pd.DataFrame({}), pd.Series([]) #initialize to empty data structures
 
             #define and fit random forest classifier
-            clf = RandomForestClassifier(random_state=42, n_jobs=-1) #n_estimators=current_parameters['n_estimators'], 
+            clf = RandomForestClassifier(random_state=42, n_jobs=-1) 
             clf.set_params(**current_parameters)
             clf.fit(train_x, train_y)
 
             #get prediction on training and calculate score
             train_y_pred = clf.predict(train_x)
-            train_score = f1_score(train_y, train_y_pred, average='weighted')            
+            train_score = f1_score(train_y, train_y_pred, average='weighted')
+            train_accuracy = accuracy_score(train_y, train_y_pred)           
 
             #LOGGING
             mlflow.log_params(current_parameters)
             mlflow.log_param("no_components", no_components)
             mlflow.log_metric("f1_score_training", train_score)
+            mlflow.log_metric("accuracy_training", train_accuracy)
 
             #get prediction on validation and calculate score
             if len(val_x) > 0:
                 val_y_pred = clf.predict(val_x)
                 val_score= f1_score(val_y, val_y_pred, average='weighted')
+                val_accuracy = accuracy_score(val_y, val_y_pred)
                 mlflow.log_metric("f1_score_validation", val_score)
+                mlflow.log_metric("accuracy_validation", val_accuracy)
 
             if log_model:
                 mlflow.sklearn.log_model(clf, "best_random_forest_model")
+                mlflow.sklearn.log_model(pca_decomposer, "pca_decomposer")
 
 
 
