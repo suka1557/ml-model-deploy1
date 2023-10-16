@@ -9,10 +9,18 @@ TEST_DATA_FILE: test.csv.zip
 LOG_FILENAME: ml_deploy.log
 LOGGER_NAME: ml_deploy_log
 
+#Pixel Scale Constant
+MAX_PIXEL_VALUE: 255
+
 #MLFLOW EXP DETAILS
-EXPERIMENT_NAME: random_forest_pca_1
+EXPERIMENT_NAME: random_forest_pca_2
 
 #Validation Test set Size
 TRAIN_VALID_SPLIT_RATIO: 0.2
 MAINTAIN_CLASS_BALANCE: True
 EVALUATION_SCORE: f1_score_validation
+
+#MLFLOW RUNID
+MLFLOW_RUN_ID: bb42dbf7ef2c4b75b29b682aa3413825
+RF_MODEL_NAME: best_random_forest_model
+PCA_DECOMPOSER: pca_decomposer

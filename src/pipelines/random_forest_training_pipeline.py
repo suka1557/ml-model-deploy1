@@ -38,9 +38,14 @@ EVALUATION_SCORE = configs['EVALUATION_SCORE']
 
 
 if __name__ == '__main__':
+    #Data Ingestion
     data_reader = (DataLoader(file_name=configs['IMAGE_DATA_FILE'], project_root=PROJECT_ROOT))
     image_data = data_reader.read_data()
     image_data, target = data_reader.extract_input_and_target(image_data)
+
+    #Scale inputs - Data Transformation
+    sc = ScaleInputs(MAX_VALUE=configs['MAX_PIXEL_VALUE'])
+    image_data = sc.scale_input(input_df=image_data)
 
     # #Run experiments
     random_forest_model_experiments(input_df=image_data,
