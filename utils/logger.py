@@ -1,5 +1,6 @@
 import logging
 import os
+from ensure import ensure_annotations
 from dotenv import load_dotenv
 
 PROJECT_ROOT = os.path.abspath("./")
@@ -7,8 +8,8 @@ CONFILE_FILE = os.path.join(PROJECT_ROOT, 'config.env')
 
 load_dotenv(CONFILE_FILE)
 
-
-def setup_logger(log_file_path):
+@ensure_annotations
+def setup_logger(log_file_path: str):
     # Create a logger
     logger = logging.getLogger(os.getenv("LOGGER_NAME"))
     logger.setLevel(logging.INFO)
