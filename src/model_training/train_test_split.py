@@ -2,12 +2,10 @@ import os
 import sys
 PROJECT_ROOT = os.path.abspath("./")
 sys.path.append(PROJECT_ROOT)
-from ensure import ensure_annotations
 from sklearn.model_selection import train_test_split
 from typing import Union
 import pandas as pd
 
-@ensure_annotations
 def get_train_test_split(input_df: pd.DataFrame, target: pd.Series, test_size: float, 
                          maintain_class_balance: bool) -> Union[
     pd.DataFrame, pd.DataFrame,

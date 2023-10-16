@@ -2,7 +2,6 @@ import os
 import sys
 PROJECT_ROOT = os.path.abspath("./")
 sys.path.append(PROJECT_ROOT)
-from ensure import ensure_annotations
 import mlflow
 import boto3
 from dotenv import load_dotenv
@@ -12,7 +11,6 @@ load_dotenv(os.path.join(PROJECT_ROOT, 'secrets.env'))
 
 #SET UP MLFLOW EXPERIMENT
 
-@ensure_annotations
 def set_up_mlflow_tracking(experiment_name: str, tracking_server: str = os.getenv("MYSQL_URI"),
                            artifact_server: str = os.getenv("ARTIFACT_URI")):
     """

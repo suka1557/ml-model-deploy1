@@ -6,12 +6,10 @@ sys.path.append(PROJECT_ROOT)
 from mlflow.tracking import MlflowClient
 import boto3
 from dotenv import load_dotenv
-from ensure import ensure_annotations
 
 load_dotenv(os.path.join(PROJECT_ROOT, 'config.env'))
 load_dotenv(os.path.join(PROJECT_ROOT, 'secrets.env'))
 
-@ensure_annotations
 def get_best_experiment_details(experiment_name: str, evaluation_criteria: str):
     """
     Function to take in a MLFlow Experiment name and an evaluation criteria as string arguments

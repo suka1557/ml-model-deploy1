@@ -6,7 +6,6 @@ from pydantic import BaseModel
 PROJECT_ROOT = os.path.abspath('./')
 sys.path.append(PROJECT_ROOT)
 from utils.logger import logger
-from ensure import ensure_annotations
 
 class DataLoader(BaseModel):
     file_name: str = 'train.csv.zip'
@@ -27,7 +26,6 @@ class DataLoader(BaseModel):
             logger.error(f"{e}")
             raise FileNotFoundError(f"{e}")
     
-    @ensure_annotations
     def extract_input_and_target(self, input_df:pd.DataFrame) -> Union[pd.DataFrame, pd.Series]:
         target = input_df[self.target_column_name]
         input_data = input_df.drop(labels=[self.target_column_name], axis=1).reset_index(drop=True)
