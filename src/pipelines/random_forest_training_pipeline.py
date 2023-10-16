@@ -55,6 +55,8 @@ if __name__ == '__main__':
                                     test_set_size=TRAIN_VALID_SPLIT_RATIO,
                                     class_distributed=MAINTAIN_CLASS_BALANCE)
     
+    print('Completed Experiments for all parameter combinations using MLFlow')
+    
     #Get best parameters for this experiment to be run on mlflow
     best_parameters_dict = get_best_experiment_details(experiment_name=EXPERIMENT_NAME, evaluation_criteria=EVALUATION_SCORE)
 
@@ -79,6 +81,8 @@ if __name__ == '__main__':
                                     test_set_size=0.0,
                                     class_distributed=MAINTAIN_CLASS_BALANCE,
                                     log_model=True)
+    
+    print("Trained final model with best parameter combination and saved model to S3 bucket")
 
     
 
