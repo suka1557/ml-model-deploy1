@@ -3,9 +3,10 @@ import pandas as pd
 import os, sys
 PROJECT_ROOT = (os.path.abspath('./'))
 sys.path.append(PROJECT_ROOT)
-
+from ensure import ensure_annotations
 from utils.logger import logger
 
+@ensure_annotations
 def get_selected_components_df(input_df: pd.DataFrame, no_components: int = 20 ) -> pd.DataFrame:
     """
     applies PCA on given dataframe and returns top n components as dataframe

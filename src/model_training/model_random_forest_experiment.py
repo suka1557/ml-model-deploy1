@@ -6,7 +6,7 @@ sys.path.append(PROJECT_ROOT)
 import numpy as np
 import pandas as pd
 from itertools import product
-
+from ensure import ensure_annotations
 
 import mlflow
 from sklearn.ensemble import RandomForestClassifier
@@ -19,6 +19,7 @@ from src.feature_selection.feature_selection_pca import get_selected_components_
 from src.experiment_track.mlflow_setup import set_up_mlflow_tracking
 from utils.aws_credentials import load_aws_credentials_into_memory
 
+@ensure_annotations
 def random_forest_model_experiments(input_df: pd.DataFrame, target: pd.Series,
                         hyperparameters_dict: dict, exp_name: str,
                         test_set_size: float, class_distributed: bool,
