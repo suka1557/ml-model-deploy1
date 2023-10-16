@@ -1,4 +1,4 @@
-from sklearn.decomposition import PCA
+from src.feature_selection.pca_transformer import PCATransformer as PCA
 import pandas as pd
 import os, sys
 PROJECT_ROOT = (os.path.abspath('./'))
@@ -6,8 +6,7 @@ sys.path.append(PROJECT_ROOT)
 from ensure import ensure_annotations
 from utils.logger import logger
 
-@ensure_annotations
-def get_selected_components_df(input_df: pd.DataFrame, no_components: int = 20 ) -> pd.DataFrame:
+def get_selected_components_df(input_df: pd.DataFrame, no_components: int = 20 ):
     """
     applies PCA on given dataframe and returns top n components as dataframe
 
@@ -22,7 +21,8 @@ def get_selected_components_df(input_df: pd.DataFrame, no_components: int = 20 )
 
     pca = PCA(n_components=no_components)
     try:
-        principal_components = pca.fit_transform(input_df)
+        pca.fit(input_df)
+        principal_components = pca.transform(input_df)
         components_df = pd.DataFrame(principal_components)
     except Exception as e:
         logger.error(f"Error in applying PCA for reducing dimensionality : {e}")
@@ -30,4 +30,4 @@ def get_selected_components_df(input_df: pd.DataFrame, no_components: int = 20 )
 
     components_df.columns = ["component_"+str(i) for i in range(no_components)]
 
-    return components_df
+    return components_df, pca

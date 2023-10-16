@@ -7,35 +7,38 @@ from src.data_processing.data_loader import DataLoader
 from src.feature_engineering.feature_scaler import ScaleInputs
 from src.model_training.model_random_forest_experiment import random_forest_model_experiments
 from src.experiment_track.mlflow_extract_results import get_best_experiment_details
+from utils.reader import read_yaml
 
 load_dotenv(os.path.join(PROJECT_ROOT, 'config.env'))
 load_dotenv(os.path.join(PROJECT_ROOT, 'secrets.env'))
+configs = read_yaml(os.path.join(PROJECT_ROOT, 'config.yaml'))
 
 #PARAMETERS TO TRY
 # NO_COMPONENTS, NO_ESTIMATORS
-hyperparameters_dict = {
-    "no_components": [50,60,80],
-    "n_estimators": [20,50, 100],
-    "max_depth":[2,5,8],    
-}
+hyperparameters_dict = configs['parameter_dict']
+# {
+#     "no_components": [50,60,80],
+#     "n_estimators": [20,50, 100],
+#     "max_depth":[2,5,8],    
+# }
 
 
 #SET UP TRACKING
-EXPERIMENT_NAME = 'random_forest_exp1'
+EXPERIMENT_NAME = configs['EXPERIMENT_NAME']
 
 #TRAIN, VAL SPLIT
-TRAIN_VALID_SPLIT_RATIO = 0.2
+TRAIN_VALID_SPLIT_RATIO = configs['TRAIN_VALID_SPLIT_RATIO']
 
 #MAINTAIN CLASS BALANCE
-MAINTAIN_CLASS_BALANCE = True
+MAINTAIN_CLASS_BALANCE = configs['MAINTAIN_CLASS_BALANCE']
 
 #EVALUATION SCORE
-EVALUATION_SCORE = 'f1_score_validation'
+EVALUATION_SCORE = configs['EVALUATION_SCORE']
 
 
 
 if __name__ == '__main__':
-    data_reader = (DataLoader(file_name=os.getenv("IMAGE_DATA_FILE"), project_root=PROJECT_ROOT))
+    data_reader = (DataLoader(file_name=configs['IMAGE_DATA_FILE'], project_root=PROJECT_ROOT))
     image_data = data_reader.read_data()
     image_data, target = data_reader.extract_input_and_target(image_data)
 
