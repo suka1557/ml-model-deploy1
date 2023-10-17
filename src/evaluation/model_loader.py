@@ -7,9 +7,6 @@ from utils.reader import read_yaml
 import mlflow
 from utils.aws_credentials import load_aws_credentials_into_memory
 
-from src.data_processing.data_loader import DataLoader
-from src.feature_engineering.feature_scaler import ScaleInputs
-
 configs = read_yaml(os.path.join(PROJECT_ROOT, 'config.yaml'))
 
 def load_rf_model_and_pca_decomposer(run_id: str = configs['MLFLOW_RUN_ID'],
