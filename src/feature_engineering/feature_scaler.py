@@ -7,4 +7,5 @@ class ScaleInputs(BaseModel):
     MAX_VALUE: float = 255.0
 
     def scale_input(self, input_df:pd.DataFrame) -> pd.DataFrame:
-        return input_df/self.MAX_VALUE
+        input_df = input_df/self.MAX_VALUE
+        return input_df
