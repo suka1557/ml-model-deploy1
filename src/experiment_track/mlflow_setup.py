@@ -4,15 +4,16 @@ PROJECT_ROOT = os.path.abspath("./")
 sys.path.append(PROJECT_ROOT)
 import mlflow
 import boto3
-from dotenv import load_dotenv
+from utils.logger import logger
+from utils.aws_credentials import load_aws_credentials_into_memory
 
-load_dotenv(os.path.join(PROJECT_ROOT, 'config.env'))
-load_dotenv(os.path.join(PROJECT_ROOT, 'secrets.env'))
+#Load credentials into memory
+load_aws_credentials_into_memory()
 
 #SET UP MLFLOW EXPERIMENT
 
-def set_up_mlflow_tracking(experiment_name: str, tracking_server: str = os.getenv("MYSQL_URI"),
-                           artifact_server: str = os.getenv("ARTIFACT_URI")):
+def set_up_mlflow_tracking(experiment_name: str, tracking_server: str = os.environ['MYSQL_URI'],
+                           artifact_server: str = os.environ["ARTIFACT_URI"]):
     """
     This function set up the server for experiment tracking and articat storage
 
@@ -27,8 +28,14 @@ def set_up_mlflow_tracking(experiment_name: str, tracking_server: str = os.geten
     """
 
     #SET UP TRACKING
-    mlflow.set_tracking_uri(tracking_server)
-    experiment_id = mlflow.create_experiment(name=experiment_name, artifact_location=artifact_server)
+    try:
+        mlflow.set_tracking_uri(tracking_server)
+        experiment_id = mlflow.create_experiment(name=experiment_name, artifact_location=artifact_server)
+        logger.info(f"Set up mlflow experiment with name: {experiment_name} and id: {experiment_id}")
+
+    except Exception as e:
+        logger.error(f"Failed to set up mlflow experiment : Error - {e}")
+        raise Exception(f"{e}")
 
     return experiment_id
 
