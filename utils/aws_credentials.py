@@ -12,3 +12,4 @@ def load_aws_credentials_into_memory():
     os.environ['AWS_ACCESS_KEY_ID'] = os.getenv("AWS_ACCESS_KEY_ID")
     os.environ['AWS_SECRET_ACCESS_KEY'] = os.getenv("AWS_SECRET_ACCESS_KEY")
     os.environ['region_name'] = os.getenv("region_name")
+    os.environ['MYSQL_URI'] = os.getenv("MYSQL_URI")

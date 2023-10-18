@@ -2,7 +2,7 @@ import os
 import sys
 PROJECT_ROOT = os.path.abspath("./")
 sys.path.append(PROJECT_ROOT)
-
+from utils.logger import logger
 from utils.reader import read_yaml
 import mlflow
 from utils.aws_credentials import load_aws_credentials_into_memory
@@ -26,13 +26,20 @@ def load_rf_model_and_pca_decomposer(run_id: str = configs['MLFLOW_RUN_ID'],
     
     """
     load_aws_credentials_into_memory()
-    mlflow.set_tracking_uri(os.getenv("MYSQL_URI"))
+    mlflow.set_tracking_uri(os.environ['MYSQL_URI'])
 
     logged_model_path = f'runs:/{run_id}/{model_name}'
     logged_pca_decomposer_path = f'runs:/{run_id}/{pca_name}'
 
-    logged_model = mlflow.sklearn.load_model(logged_model_path)
-    logged_pca_decomposer = mlflow.sklearn.load_model(logged_pca_decomposer_path)
+    try:
+
+        logged_model = mlflow.sklearn.load_model(logged_model_path)
+        logged_pca_decomposer = mlflow.sklearn.load_model(logged_pca_decomposer_path)
+        logger.info(f"Successfully loaded model into memory from S3 for RUN_ID - {run_id}")
+
+    except Exception as e:
+        logger.error(f"Failed to load model from S3 Bucket - Error: {e}")
+        raise Exception(f"{e}")
 
     return logged_pca_decomposer, logged_model
 
