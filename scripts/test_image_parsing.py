@@ -7,7 +7,6 @@ sys.path.append(PROJECT_ROOT)
 filename = '/Users/sukant.kumar/Downloads/test_image.png'
 
 import cv2 
-import matplotlib.pyplot as plt
 import pandas as pd
 
 # Load sample image
