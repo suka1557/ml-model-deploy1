@@ -5,6 +5,7 @@ sys.path.append(PROJECT_ROOT)
 from sklearn.model_selection import train_test_split
 from typing import Union
 import pandas as pd
+from utils.logger import logger
 
 def get_train_test_split(input_df: pd.DataFrame, target: pd.Series, test_size: float, 
                          maintain_class_balance: bool) -> Union[
@@ -25,14 +26,23 @@ def get_train_test_split(input_df: pd.DataFrame, target: pd.Series, test_size: f
         val_df, val_y: dataframe and target series for Validation
     """
     RANDOM_STATE = 102
-    if maintain_class_balance:
-        train_df, val_df, train_y, val_y = train_test_split(input_df, target, 
-                                                            test_size=test_size, 
-                                                            random_state=RANDOM_STATE, shuffle=True,
-                                                            stratify=target)
-    else:
-        train_df, val_df, train_y, val_y = train_test_split(input_df, target, 
-                                                            test_size=test_size, 
-                                                            random_state=RANDOM_STATE, shuffle=True)
+    try:
+        if maintain_class_balance:
+            train_df, val_df, train_y, val_y = train_test_split(input_df, target, 
+                                                                test_size=test_size, 
+                                                                random_state=RANDOM_STATE, shuffle=True,
+                                                                stratify=target)
+        else:
+            train_df, val_df, train_y, val_y = train_test_split(input_df, target, 
+                                                                test_size=test_size, 
+                                                                random_state=RANDOM_STATE, shuffle=True)
+            
+        logger.info(f"""Splitted into train and validation set \n 
+                    train set size: {train_df.shape} \n 
+                    valid set size: {val_df.shape} """)
+        
+    except Exception as e:
+        logger.error(f"Error in splitting into train-val set: Error - {e}")
+        raise Exception(f"{e}")
 
     return train_df,  val_df, train_y, val_y
