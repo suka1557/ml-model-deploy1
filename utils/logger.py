@@ -1,17 +1,16 @@
 import logging
 import os
 from ensure import ensure_annotations
-from dotenv import load_dotenv
-
+from utils.reader import read_yaml
 PROJECT_ROOT = os.path.abspath("./")
-CONFILE_FILE = os.path.join(PROJECT_ROOT, 'config.env')
+CONFIG_FILE = os.path.join(PROJECT_ROOT, 'config.yaml')
 
-load_dotenv(CONFILE_FILE)
+configs = read_yaml(CONFIG_FILE)
 
 @ensure_annotations
 def setup_logger(log_file_path: str):
     # Create a logger
-    logger = logging.getLogger(os.getenv("LOGGER_NAME"))
+    logger = logging.getLogger(configs["LOGGER_NAME"])
     logger.setLevel(logging.INFO)
 
     # Create a file handler and set the log level
@@ -34,7 +33,7 @@ def setup_logger(log_file_path: str):
     return logger
 
 #Create the logger
-log_file_path = os.path.join(PROJECT_ROOT, os.getenv("LOG_FILENAME"))
+log_file_path = os.path.join(PROJECT_ROOT, configs["LOG_FILENAME"])
 logger = setup_logger(log_file_path)
 
 
