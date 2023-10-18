@@ -4,8 +4,8 @@ PROJECT_ROOT = os.path.abspath("./")
 sys.path.append(PROJECT_ROOT)
 
 from dotenv import load_dotenv
-
-load_dotenv(os.path.join(PROJECT_ROOT, 'secrets.env'))
+if os.path.exists(os.path.join(PROJECT_ROOT, 'secrets.env') ):
+    load_dotenv(os.path.join(PROJECT_ROOT, 'secrets.env'))
 
 def load_aws_credentials_into_memory():
     #LOAD CREDENTIALS
