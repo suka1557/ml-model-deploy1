@@ -37,9 +37,7 @@ def get_train_test_split(input_df: pd.DataFrame, target: pd.Series, test_size: f
                                                                 test_size=test_size, 
                                                                 random_state=RANDOM_STATE, shuffle=True)
             
-        logger.info(f"""Splitted into train and validation set \n 
-                    train set size: {train_df.shape} \n 
-                    valid set size: {val_df.shape} """)
+        logger.info(f"""Splitted into train and validation set - train set size: {train_df.shape} - valid set size: {val_df.shape} """)
         
     except Exception as e:
         logger.error(f"Error in splitting into train-val set: Error - {e}")

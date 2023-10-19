@@ -84,7 +84,7 @@ def random_forest_model_experiments(input_df: pd.DataFrame, target: pd.Series,
                     mlflow.sklearn.log_model(clf, "best_random_forest_model")
                     mlflow.sklearn.log_model(pca_decomposer, "pca_decomposer")
 
-        logger.info("Trained a random forest model for different hyperparameter combinations")
+                logger.info(f"Trained a random forest model for hyperparameter combinations - {current_parameters}, pca_components: {no_components}")
 
     except Exception as e:
         logger.error("Error in fitting Random Forest Models: Error - {e}")
