@@ -3,7 +3,6 @@ import sys
 PROJECT_ROOT = os.path.abspath("./")
 sys.path.append(PROJECT_ROOT)
 import yaml
-from utils.logger import logger
 from ensure import ensure_annotations
 
 @ensure_annotations
@@ -21,10 +20,8 @@ def read_yaml(file_path: str) -> dict:
     try:
         with open(file_path, 'r') as file:
             file_data = yaml.safe_load(file)
-        logger.info(f" Sucessfully read the configuration from {file_path}")
         
     except Exception as e:
-        logger.error(f"Failed to read the configurations from {file_path} , Error: {e}")
         raise FileNotFoundError(f"{e}")
 
     return file_data
