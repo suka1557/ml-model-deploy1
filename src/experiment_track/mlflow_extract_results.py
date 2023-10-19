@@ -34,6 +34,7 @@ def get_best_experiment_details(experiment_name: str, evaluation_criteria: str):
 
         current_best_metric = None
         best_parameters = None
+        best_run_id = None
 
         # Iterate through the runs and extract parameters
         for run in runs:
@@ -44,12 +45,14 @@ def get_best_experiment_details(experiment_name: str, evaluation_criteria: str):
             if current_best_metric is None:
                 current_best_metric = metrics[evaluation_criteria]
                 best_parameters = parameters
+                best_run_id = run_id
             else:
                 if metrics[evaluation_criteria] > current_best_metric:
                     current_best_metric = metrics[evaluation_criteria]
                     best_parameters = parameters
+                    best_run_id = run_id
 
-        logger.info(f"Successfully extracted best run parameters for experiment - {experiment_name}")
+        logger.info(f"Successfully extracted best run parameters for experiment - {experiment_name}: Best Run Id - {best_run_id}")
 
     except Exception as e:
         logger.error(f"Failed to get best run parameters from experiment: Error - {e}")
