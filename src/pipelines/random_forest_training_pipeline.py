@@ -6,7 +6,7 @@ from utils.logger import logger
 from src.data_processing.data_loader import DataLoader
 from src.feature_engineering.feature_scaler import ScaleInputs
 from src.model_training.model_random_forest_experiment import random_forest_model_experiments
-from src.experiment_track.mlflow_extract_results import get_best_experiment_details
+from src.experiment_track.mlflow_extract_results import get_best_run_details
 from utils.reader import read_yaml
 
 configs = read_yaml(os.path.join(PROJECT_ROOT, 'config.yaml'))
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     logger.info('Completed Experiments for all parameter combinations using MLFlow')
     
     #Get best parameters for this experiment to be run on mlflow
-    best_parameters_dict,_,_ = get_best_experiment_details(experiment_name=EXPERIMENT_NAME, evaluation_criteria=EVALUATION_SCORE)
+    best_parameters_dict,_,_ = get_best_run_details(experiment_name=EXPERIMENT_NAME, evaluation_criteria=EVALUATION_SCORE)
 
     #MLFLOW Returns all values as string
     #Convert them to float wherever possible

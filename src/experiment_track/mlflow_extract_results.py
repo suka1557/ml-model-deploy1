@@ -7,7 +7,7 @@ from mlflow.tracking import MlflowClient
 import boto3
 from utils.logger import logger
 
-def get_best_experiment_details(experiment_name: str, evaluation_criteria: str):
+def get_best_run_details(experiment_name: str, evaluation_criteria: str):
     """
     Function to take in a MLFlow Experiment name and an evaluation criteria as string arguments
     It then searches through all the runs in that experiment to find the run which has the maximum value for the 
