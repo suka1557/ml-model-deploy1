@@ -50,7 +50,7 @@ if __name__ == '__main__':
     logger.info('Completed Experiments for all parameter combinations using MLFlow')
     
     #Get best parameters for this experiment to be run on mlflow
-    best_parameters_dict = get_best_experiment_details(experiment_name=EXPERIMENT_NAME, evaluation_criteria=EVALUATION_SCORE)
+    best_parameters_dict,_,_ = get_best_experiment_details(experiment_name=EXPERIMENT_NAME, evaluation_criteria=EVALUATION_SCORE)
 
     #MLFLOW Returns all values as string
     #Convert them to float wherever possible

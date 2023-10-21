@@ -58,4 +58,4 @@ def get_best_experiment_details(experiment_name: str, evaluation_criteria: str):
         logger.error(f"Failed to get best run parameters from experiment: Error - {e}")
         raise Exception(f"{e}")
 
-    return best_parameters
+    return best_parameters, best_run_id, current_best_metric
